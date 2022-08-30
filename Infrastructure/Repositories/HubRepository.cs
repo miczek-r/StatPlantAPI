@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class HubRepository : Repository<Hub>, IHubRepository
     {
-        public UserRepository(IdentityDbContext dbContext) : base(dbContext)
+        public HubRepository(IdentityDbContext dbContext) : base(dbContext)
         {
         }
     }

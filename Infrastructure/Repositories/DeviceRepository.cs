@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class DeviceRepository : Repository<Device>, IDeviceRepository
     {
-        public UserRepository(IdentityDbContext dbContext) : base(dbContext)
+        public DeviceRepository(IdentityDbContext dbContext) : base(dbContext)
         {
         }
     }

@@ -10,13 +10,15 @@ namespace StatPlantAPI.Configurations
         public static void RegisterDbContext(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddDbContext<IdentityDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")));
+            options.UseMySql(
+                configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
+                ));
         }
 
         public static void RegisterContextAccessor(this IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         public static void RegisterIdentity(this IServiceCollection services)

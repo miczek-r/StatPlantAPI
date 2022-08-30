@@ -6,5 +6,7 @@ namespace Core.Entities
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public List<Hub> Hubs { get; set; }
+        public List<Notification> Notifications { get; set; }
     }
 }

@@ -11,6 +11,9 @@ namespace StatPlantAPI.Configurations
             MapperConfiguration mapperConfig = new(mc =>
             {
                 mc.AddProfile(new UserMappingProfile());
+                mc.AddProfile(new SensorTypeMappingProfile());
+                mc.AddProfile(new SensorDataMappingProfile());
+                mc.AddProfile(new SensorMappingProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

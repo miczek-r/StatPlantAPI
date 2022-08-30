@@ -66,7 +66,7 @@ namespace Application.Services
         public async Task<IEnumerable<UserBaseDTO>> GetAll()
         {
             IEnumerable<User> users = await _userManager.Users.ToListAsync();
-            return _mapper.Map<List<UserBaseDTO>>(users);
+            return _mapper.Map<IEnumerable<UserBaseDTO>>(users);
         }
 
         public async Task<UserBaseDTO> GetById(string id)
