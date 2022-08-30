@@ -32,6 +32,7 @@ jobs:
         with:
           files: './StatPlantAPI/appsettings.json'
         env:
+          ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
           ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
           JWT.Secret: ${{ secrets.JWT_SECRET }}
         
