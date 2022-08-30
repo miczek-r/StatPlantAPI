@@ -9,6 +9,8 @@ namespace StatPlantAPI.Configurations
     {
         public static void RegisterDbContext(this IServiceCollection services, ConfigurationManager configuration)
         {
+            Console.WriteLine(configuration.GetConnectionString("DefaultConnection"));
+            Console.WriteLine(configuration.GetConnectionString("Default"));
             services.AddDbContext<IdentityDbContext>(options =>
             options.UseMySql(
                 configuration.GetConnectionString("DefaultConnection"),
