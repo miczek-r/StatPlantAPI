@@ -26,6 +26,15 @@ jobs:
       - name: Checkout the repo 
         uses: actions/checkout@v2
         
+        #substitute production appsettings entries to appsettings json file
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: '${{env.DOTNET_ROOT}}/StatPlantAPI/appsettings.json'
+        env:
+          ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
+          JWT.Secret: ${{ secrets.JWT_SECRET }}
+        
       - name: Build container image
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) -f ./StatPlantAPI/Dockerfile .
 
