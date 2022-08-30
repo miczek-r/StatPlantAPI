@@ -74,7 +74,7 @@ jobs:
             # Remove old container
             docker rm $(echo $IMAGE_NAME)
             # Run a new container from a new image
-            docker run -p 8080:80 -p 446:443  -d \
+            docker run -p 8080:80 -p 446:443 --network mysql  -d \
             --restart always \
             --name $(echo $IMAGE_NAME) \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
