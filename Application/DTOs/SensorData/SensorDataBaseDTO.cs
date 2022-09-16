@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Sensor;
+﻿using Application.DTOs.Device;
+using Application.DTOs.Sensor;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,6 @@ namespace Application.DTOs.SensorData
 {
     public class SensorDataBaseDTO
     {
-        [SwaggerSchema("The data owner device", Nullable = false)]
-        public SensorBaseDTO Device { get; set; }
         [SwaggerSchema("The sensor", Nullable = false)]
         public SensorBaseDTO Sensor { get; set; }
         [SwaggerSchema("The value of measurement", Nullable = false)]
