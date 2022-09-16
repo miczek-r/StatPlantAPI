@@ -20,8 +20,6 @@ namespace Application.DTOs.Device
         public string? Description { get; set; }
         [SwaggerSchema("The device mac address", Nullable = false)]
         public string MacAddress { get; set; } = String.Empty;
-        [SwaggerSchema("The devices hub")]
-        public HubBaseDTO Hub { get; set; }
         [SwaggerSchema("List of sensor data")]
         public List<SensorDataBaseDTO> SensorData { get; set; } = new ();
     }
