@@ -10,12 +10,8 @@ namespace Application.DTOs.SensorData
     public class SensorDataCreateDTO
     {
         [SwaggerSchema("The data owner device identifier", Nullable = false)]
-        public int DeviceId { get; set; }
-        [SwaggerSchema("The sensor identifier", Nullable = false)]
-        public int SensorId { get; set; }
-        [SwaggerSchema("The value of measurement", Nullable = false)]
-        public float Value { get; set; }
-        [SwaggerSchema("The date of measurement", Nullable = false)]
-        public DateTime DateOfMeasurement { get; set; }
+        public int Id { get; set; }
+        [SwaggerSchema("The sensor data")]
+        public List<SensorDataSingleDTO> Data { get; set; } = new ();
     }
 }

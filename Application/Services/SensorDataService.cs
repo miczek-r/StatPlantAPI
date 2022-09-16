@@ -4,6 +4,7 @@ using Application.IServices;
 using AutoMapper;
 using Core.Entities;
 using Core.IRepositories;
+using Core.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,33 @@ namespace Application.Services
     {
         private readonly IMapper _mapper;
         private readonly ISensorDataRepository _repository;
+        private readonly ISensorRepository _sensorRepository;
+        private readonly IDeviceRepository _deviceRepository;
 
-        public SensorDataService(IMapper mapper, ISensorDataRepository repository)
+        public SensorDataService(IMapper mapper, ISensorDataRepository repository, ISensorRepository sensorRepository, IDeviceRepository deviceRepository)
         {
             _mapper = mapper;
             _repository = repository;
+            _sensorRepository = sensorRepository;
+            _deviceRepository = deviceRepository;
         }
 
-        public async Task<int> Create(SensorDataCreateDTO sensorCreateDTO)
+        public async Task Create(SensorDataCreateDTO sensorCreateDTO)
         {
-            SensorData sensorData = _mapper.Map<SensorData>(sensorCreateDTO);
+            foreach (var singleSensorData in sensorCreateDTO.Data){
+            Sensor sensor = await _sensorRepository.GetBySpecAsync(new SensorSpecification(x => x.SensorType.TypeName == singleSensorData.Key));
+                Device device = await _deviceRepository.GetByIdAsync(sensorCreateDTO.Id);
+                SensorData sensorData = new()
+                {
+                    DateOfMeasurement = DateTime.Now,
+                    Sensor = sensor,
+                    Device = device,
+                    Value = singleSensorData.Value
+                };
+                await _repository.AddAsync(sensorData);
+            }
 
-            await _repository.AddAsync(sensorData);
             await _repository.SaveAsync();
-
-            return sensorData.Id;
         }
 
         public async Task<IEnumerable<SensorDataBaseDTO>> GetAll()
