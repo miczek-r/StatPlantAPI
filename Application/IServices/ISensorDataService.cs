@@ -10,7 +10,7 @@ namespace Application.IServices
     public interface ISensorDataService
     {
         Task<IEnumerable<SensorDataBaseDTO>> GetAll();
-        Task<int> Create(SensorDataCreateDTO sensorCreateDTO);
+        Task Create(SensorDataCreateDTO sensorCreateDTO);
         Task Remove(int id);
     }
 }
