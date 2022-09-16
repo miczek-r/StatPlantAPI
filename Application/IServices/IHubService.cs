@@ -9,7 +9,7 @@ namespace Application.IServices
 {
     public interface IHubService
     {
-        Task<IEnumerable<HubBaseDTO>> GetAll();
+        Task<IEnumerable<HubLiteDTO>> GetAll();
         Task<HubBaseDTO> GetById(int id);
         Task<int> Create(HubCreateDTO hubCreateDTO);
         Task Remove(int id);
