@@ -1,6 +1,4 @@
-﻿using Application.DTOs.Hub;
-using Application.DTOs.SensorData;
-using Application.DTOs.SensorType;
+﻿using Application.DTOs.SensorData;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -10,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Device
 {
-    public class DeviceBaseDTO
+    public class DeviceLiteDTO
     {
         [SwaggerSchema("The device identifier", Nullable = false)]
         public string Id { get; set; } = string.Empty;
@@ -20,9 +18,5 @@ namespace Application.DTOs.Device
         public string? Description { get; set; }
         [SwaggerSchema("The device mac address", Nullable = false)]
         public string MacAddress { get; set; } = String.Empty;
-        [SwaggerSchema("List of sensor data")]
-        public List<SensorDataLiteDTO> SensorData { get; set; } = new ();
-        [SwaggerSchema("List of detailed sensor data of past week")]
-        public List<SensorDataBase2DTO> SensorDataDetails { get; set; } = new();
     }
 }
