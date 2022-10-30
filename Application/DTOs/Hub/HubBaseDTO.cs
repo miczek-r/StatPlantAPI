@@ -20,7 +20,7 @@ namespace Application.DTOs.Hub
         [SwaggerSchema("The hub mac address", Nullable = false)]
         public string MacAddress { get; set; } = String.Empty;
         [SwaggerSchema("The list of hubs devices")]
-        public List<DeviceBaseDTO> Devices { get; set; } = new ();
+        public List<DeviceLiteDTO> Devices { get; set; } = new ();
         [SwaggerSchema("The list of hubs users")]
         public List<UserBaseDTO> Users { get; set; } = new ();
     }

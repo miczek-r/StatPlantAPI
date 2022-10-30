@@ -14,6 +14,9 @@ namespace Application.Mappers
         public SensorDataMappingProfile()
         {
             CreateMap<SensorData, SensorDataBaseDTO>().PreserveReferences();
+            CreateMap<SensorData, SensorDataLiteDTO>()
+                .ForMember(dest => dest.SensorTypeName, opt => opt.MapFrom(src => src.Sensor.SensorType.TypeName))
+                .PreserveReferences();
             CreateMap<SensorDataCreateDTO, SensorData>().PreserveReferences();
         }
     }
