@@ -19,13 +19,15 @@ namespace Application.Services
         private readonly ISensorDataRepository _repository;
         private readonly ISensorRepository _sensorRepository;
         private readonly IDeviceRepository _deviceRepository;
+        private readonly ISensorTypeRepository _sensorTypeRepository;
 
-        public SensorDataService(IMapper mapper, ISensorDataRepository repository, ISensorRepository sensorRepository, IDeviceRepository deviceRepository)
+        public SensorDataService(IMapper mapper, ISensorDataRepository repository, ISensorRepository sensorRepository, IDeviceRepository deviceRepository, ISensorTypeRepository sensorTypeRepository)
         {
             _mapper = mapper;
             _repository = repository;
             _sensorRepository = sensorRepository;
             _deviceRepository = deviceRepository;
+            _sensorTypeRepository = sensorTypeRepository;
         }
 
         public async Task Create(SensorDataCreateDTO sensorCreateDTO)
@@ -35,7 +37,7 @@ namespace Application.Services
                 Device device = await _deviceRepository.GetByIdAsync(sensorCreateDTO.Id);
                 SensorData sensorData = new()
                 {
-                    DateOfMeasurement = DateTime.Now,
+                    DateOfMeasurement = DateTime.UtcNow,
                     Sensor = sensor,
                     Device = device,
                     Value = singleSensorData.Value
@@ -50,6 +52,30 @@ namespace Application.Services
         {
             IEnumerable<SensorData> sensorData = await _repository.GetAllAsync();
             return _mapper.Map<IEnumerable<SensorDataBaseDTO>>(sensorData);
+        }
+
+        public async Task<SensorDataDetailsDTO> GetDetails(SensorDataGetDetailsDTO sensorDataGetDetailsDTO)
+        {
+            Device? device = await _deviceRepository.GetByIdAsync(sensorDataGetDetailsDTO.DeviceId);
+            if(device is null)
+            {
+                throw new ObjectNotFoundException("This device does not exists");
+            }
+            SensorType? sensorType = await _sensorTypeRepository.GetByIdAsync(sensorDataGetDetailsDTO.SensorType);
+            if(sensorType is null)
+            {
+                throw new ObjectNotFoundException("This sensor type does not exists");
+            }
+            IEnumerable<SensorData> sensorData = await _repository.GetByLambdaAsync((data) => sensorDataGetDetailsDTO.StartDate <= data.DateOfMeasurement && sensorDataGetDetailsDTO.EndDate >= data.DateOfMeasurement && data.Device.Id == sensorDataGetDetailsDTO.DeviceId && data.Sensor.SensorType.Id == sensorDataGetDetailsDTO.SensorType);
+            SensorDataDetailsDTO result = new()
+            {
+                SensorDataRecords = _mapper.Map<IEnumerable<SensorDataRecordDTO>>(sensorData).ToList(),
+                TypeOfSensor = sensorType.TypeName,
+                MeasurementUnit = sensorType.Unit,
+                DeviceInformations = $"{device.Name} - {device.MacAddress}",
+                LatestRecordedValue = _mapper.Map<SensorDataRecordDTO>((await _repository.GetByLambdaAsync((data) => data.Device.Id == sensorDataGetDetailsDTO.DeviceId && data.Sensor.SensorType.Id == sensorDataGetDetailsDTO.SensorType)).OrderByDescending(record => record.DateOfMeasurement).First())
+            };
+            return result;
         }
 
         public async Task Remove(int id)
