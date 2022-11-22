@@ -12,5 +12,6 @@ namespace Application.IServices
         Task<IEnumerable<SensorDataBaseDTO>> GetAll();
         Task Create(SensorDataCreateDTO sensorCreateDTO);
         Task Remove(int id);
+        Task<SensorDataDetailsDTO> GetDetails(SensorDataGetDetailsDTO sensorDataGetDetailsDTO);
     }
 }

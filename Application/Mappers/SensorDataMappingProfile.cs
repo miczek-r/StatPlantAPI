@@ -18,6 +18,7 @@ namespace Application.Mappers
                 .ForMember(dest => dest.SensorTypeName, opt => opt.MapFrom(src => src.Sensor.SensorType.TypeName))
                 .PreserveReferences();
             CreateMap<SensorDataCreateDTO, SensorData>().PreserveReferences();
+            CreateMap<SensorData, SensorDataRecordDTO>().ForMember(dest => dest.MeasuredValue, opt => opt.MapFrom(src => src.Value)).PreserveReferences();
         }
     }
 }

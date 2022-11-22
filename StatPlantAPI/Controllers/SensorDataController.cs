@@ -33,5 +33,11 @@ namespace StatPlantAPI.Controllers
             await _sensorDataService.Create(sensorDataCreateDTO);
             return NoContent();
         }
+
+        [HttpGet]
+        public async Task<ActionResult<SensorDataDetailsDTO>> Get([FromQuery] SensorDataGetDetailsDTO getDetailsDTO)
+        {
+            return Ok(await _sensorDataService.GetDetails(getDetailsDTO));
+        }
     }
 }
