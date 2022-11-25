@@ -9,6 +9,7 @@ namespace Application.DTOs.SensorData
     public class SensorDataLiteDTO
     {
         public string SensorTypeName { get; set; }
+        public int SensorTypeId { get; set; }
         public float Value { get; set; }
         public DateTime DateOfMeasurement { get; set; }
     }
