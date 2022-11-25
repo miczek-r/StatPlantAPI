@@ -15,7 +15,7 @@ namespace Application.Mappers
         {
             CreateMap<SensorData, SensorDataBaseDTO>().PreserveReferences();
             CreateMap<SensorData, SensorDataLiteDTO>()
-                .ForMember(dest => dest.SensorTypeName, opt => opt.MapFrom(src => src.Sensor.SensorType.TypeName))
+                .ForMember(dest => dest.SensorTypeName, opt => opt.MapFrom(src => src.Sensor.SensorType.TypeName)).ForMember(dest => dest.SensorTypeId, opt => opt.MapFrom(src=> src.Sensor.SensorType.Id))
                 .PreserveReferences();
             CreateMap<SensorDataCreateDTO, SensorData>().PreserveReferences();
             CreateMap<SensorData, SensorDataRecordDTO>().ForMember(dest => dest.MeasuredValue, opt => opt.MapFrom(src => src.Value)).PreserveReferences();
