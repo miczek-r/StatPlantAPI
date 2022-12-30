@@ -11,8 +11,9 @@ namespace Core.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string MacAddress { get; set; }
+        public string UUID { get; set; }
         public Hub Hub { get; set; }
         public List<SensorData> SensorData { get;set;}
+        public List<Trigger> Triggers { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Application.Services
         {
             foreach (var singleSensorData in sensorCreateDTO.Data){
             Sensor sensor = await _sensorRepository.GetBySpecAsync(new SensorSpecification(x => x.SensorType.TypeName == singleSensorData.Key));
-                Device device = await _deviceRepository.GetByIdAsync(sensorCreateDTO.Id);
+                Device device = await _deviceRepository.GetBySpecAsync(new DeviceSpecification(x => x.UUID == sensorCreateDTO.Id));
                 SensorData sensorData = new()
                 {
                     DateOfMeasurement = DateTime.UtcNow,
@@ -72,7 +72,7 @@ namespace Application.Services
                 SensorDataRecords = _mapper.Map<IEnumerable<SensorDataRecordDTO>>(sensorData).ToList(),
                 TypeOfSensor = sensorType.TypeName,
                 MeasurementUnit = sensorType.Unit,
-                DeviceInformations = $"{device.Name} - {device.MacAddress}",
+                DeviceInformations = $"{device.Name} - {device.UUID}",
                 LatestRecordedValue = _mapper.Map<SensorDataRecordDTO>((await _repository.GetByLambdaAsync((data) => data.Device.Id == sensorDataGetDetailsDTO.DeviceId && data.Sensor.SensorType.Id == sensorDataGetDetailsDTO.SensorType)).OrderByDescending(record => record.DateOfMeasurement).First())
             };
             return result;

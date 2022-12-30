@@ -9,8 +9,8 @@ namespace Application.DTOs.SensorData
 {
     public class SensorDataCreateDTO
     {
-        [SwaggerSchema("The data owner device identifier", Nullable = false)]
-        public int Id { get; set; }
+        [SwaggerSchema("The data owner device uuid", Nullable = false)]
+        public string Id { get; set; }
         [SwaggerSchema("The sensor data")]
         public List<SensorDataSingleDTO> Data { get; set; } = new ();
     }
