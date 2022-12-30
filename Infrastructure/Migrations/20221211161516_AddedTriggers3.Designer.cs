@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,13 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221211161516_AddedTriggers3")]
+    partial class AddedTriggers3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Core.Entities.Condition", b =>
@@ -59,11 +61,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("HubId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MacAddress")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UUID")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,41 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221210152200_AddedTriggers")]
+    partial class AddedTriggers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Core.Entities.Condition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Inequality")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SensorTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TriggerId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Value")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SensorTypeId");
-
-                    b.HasIndex("TriggerId");
-
-                    b.ToTable("Condition");
-                });
 
             modelBuilder.Entity("Core.Entities.Device", b =>
                 {
@@ -59,11 +34,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("HubId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MacAddress")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UUID")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -192,32 +167,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SensorType");
-                });
-
-            modelBuilder.Entity("Core.Entities.Trigger", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeviceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("TriggerType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeviceId");
-
-                    b.ToTable("Trigger");
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>
@@ -433,21 +382,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Core.Entities.Condition", b =>
-                {
-                    b.HasOne("Core.Entities.SensorType", "SensorType")
-                        .WithMany()
-                        .HasForeignKey("SensorTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Trigger", null)
-                        .WithMany("Conditions")
-                        .HasForeignKey("TriggerId");
-
-                    b.Navigation("SensorType");
-                });
-
             modelBuilder.Entity("Core.Entities.Device", b =>
                 {
                     b.HasOne("Core.Entities.Hub", "Hub")
@@ -496,17 +430,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Device");
 
                     b.Navigation("Sensor");
-                });
-
-            modelBuilder.Entity("Core.Entities.Trigger", b =>
-                {
-                    b.HasOne("Core.Entities.Device", "Device")
-                        .WithMany("Triggers")
-                        .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Device");
                 });
 
             modelBuilder.Entity("HubUser", b =>
@@ -578,18 +501,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Device", b =>
                 {
                     b.Navigation("SensorData");
-
-                    b.Navigation("Triggers");
                 });
 
             modelBuilder.Entity("Core.Entities.Hub", b =>
                 {
                     b.Navigation("Devices");
-                });
-
-            modelBuilder.Entity("Core.Entities.Trigger", b =>
-                {
-                    b.Navigation("Conditions");
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>

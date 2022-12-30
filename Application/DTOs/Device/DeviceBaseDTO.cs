@@ -18,8 +18,8 @@ namespace Application.DTOs.Device
         public string Name { get; set; } = string.Empty;
         [SwaggerSchema("The device description", Nullable = true)]
         public string? Description { get; set; }
-        [SwaggerSchema("The device mac address", Nullable = false)]
-        public string MacAddress { get; set; } = String.Empty;
+        [SwaggerSchema("The device UUID", Nullable = false)]
+        public string UUID { get; set; } = String.Empty;
         [SwaggerSchema("List of sensor data")]
         public List<SensorDataLiteDTO> SensorData { get; set; } = new ();
         [SwaggerSchema("List of detailed sensor data of past week")]
