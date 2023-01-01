@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221231142607_RemovedIntervalFromTrigger")]
+    partial class RemovedIntervalFromTrigger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SensorTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TriggerId")
+                    b.Property<int?>("TriggerId")
                         .HasColumnType("int");
 
                     b.Property<float>("Value")
@@ -89,10 +91,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -454,15 +452,11 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Trigger", "Trigger")
+                    b.HasOne("Core.Entities.Trigger", null)
                         .WithMany("Conditions")
-                        .HasForeignKey("TriggerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TriggerId");
 
                     b.Navigation("SensorType");
-
-                    b.Navigation("Trigger");
                 });
 
             modelBuilder.Entity("Core.Entities.Device", b =>

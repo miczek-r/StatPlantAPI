@@ -14,6 +14,7 @@ namespace Core.Specifications
         public DeviceSpecification(Expression<Func<Device, bool>> criteria)
         : base(criteria)
         {
+            AddInclude(x => x.Triggers);
             AddInclude(x => x.Hub);
             AddInclude(x => x.SensorData);
             AddInclude($"{nameof(Device.Hub)}.{nameof(Hub.Users)}");

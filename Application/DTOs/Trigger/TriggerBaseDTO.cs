@@ -11,9 +11,13 @@ namespace Application.DTOs.Trigger
 {
     public class TriggerBaseDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public TriggerType TriggerType { get; set; }
-        public Interval Interval { get; set; }
+        public string? ApiUrl { get; set; }
+        public string? NotificationText { get; set; }
         public List<ConditionBaseDTO> Conditions { get; set; }
+        public bool IsActive { get; set; }
+
     }
 }

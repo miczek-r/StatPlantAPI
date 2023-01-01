@@ -32,6 +32,9 @@ namespace Application.Services
         {
             Notification notification = _mapper.Map<Notification>(notificationCreateDTO);
 
+            notification.Status = Core.Enums.NotificationStatus.New;
+            notification.CreatedTime = DateTime.Now;
+
             await _repository.AddAsync(notification);
             await _repository.SaveAsync();
 

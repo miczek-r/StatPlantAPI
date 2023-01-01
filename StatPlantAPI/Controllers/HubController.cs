@@ -50,5 +50,27 @@ namespace StatPlantAPI.Controllers
         {
             return Ok(await _hubService.GetById(hubId));
         }
+
+        [HttpPost]
+        public async Task<ActionResult<HubBaseDTO>> CreateHub(HubCreateDTO hubCreateDTO)
+        {
+            int id = await _hubService.Create(hubCreateDTO);
+            HubBaseDTO hub = await _hubService.GetById(id);
+            return CreatedAtAction(nameof(TriggerController.Create), new { id }, hub);
+        }
+
+        [HttpPut("Join")]
+        public async Task<ActionResult> JoinHub(HubJoinDTO hubJoinDTO)
+        {
+            await _hubService.Join(hubJoinDTO);
+            return NoContent();
+        }
+
+        [HttpPut("Leave/{hubId}")]
+        public async Task<ActionResult> LeaveHub(int hubId)
+        {
+            await _hubService.Leave(hubId);
+            return NoContent();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Hub;
 using Application.DTOs.SensorData;
 using Application.DTOs.SensorType;
+using Application.DTOs.Trigger;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,6 @@ namespace Application.DTOs.Device
         public List<SensorDataLiteDTO> SensorData { get; set; } = new ();
         [SwaggerSchema("List of detailed sensor data of past week")]
         public List<SensorDataBase2DTO> SensorDataDetails { get; set; } = new();
+        public List<TriggerLiteDTO> CalledTriggers { get; set; } = new();
     }
 }

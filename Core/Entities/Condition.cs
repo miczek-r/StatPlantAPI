@@ -14,5 +14,7 @@ namespace Core.Entities
         public SensorType SensorType { get; set; }
         public int SensorTypeId { get; set; }
         public float Value { get; set; }
+        public int TriggerId { get; set; }
+        public Trigger Trigger { get; set; }
     }
 }

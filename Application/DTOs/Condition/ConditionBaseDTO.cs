@@ -11,8 +11,8 @@ namespace Application.DTOs.Condition
     public class ConditionBaseDTO
     {
         public int Id { get; set; }
-        public Inequality Ineqality { get; set; }
-        public SensorTypeBaseDTO SensorType { get; set; }
+        public Inequality Inequality { get; set; }
+        public int SensorTypeId { get; set; }
         public float Value { get; set; }
     }
 }

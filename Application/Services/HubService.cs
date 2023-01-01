@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.IRepositories;
 using Core.Specifications;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,22 +21,84 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IHubRepository _repository;
+        private readonly UserManager<User> _userManager;
+        private readonly IHashingService _hashingService;
 
-        public HubService(IMapper mapper, IHttpContextAccessor contextAccessor, IHubRepository repository)
+        public HubService(IMapper mapper, IHttpContextAccessor contextAccessor, IHubRepository repository, UserManager<User> userManager, IHashingService hashingService)
         {
             _mapper = mapper;
             _contextAccessor = contextAccessor;
             _repository = repository;
+            _userManager = userManager;
+            _hashingService = hashingService;   
         }
 
         public async Task<int> Create(HubCreateDTO hubCreateDTO)
         {
             Hub hub = _mapper.Map<Hub>(hubCreateDTO);
 
+            hub.Password = _hashingService.HashPassword(hubCreateDTO.Password);
+
             await _repository.AddAsync(hub);
             await _repository.SaveAsync();
 
             return hub.Id;
+        }
+
+        public async Task Join(HubJoinDTO hubJoinDTO)
+        {
+            string? userId = GetCurrentUserId();
+            if (userId is null)
+            {
+                throw new AccessForbiddenException("You must be logged in");
+            }
+            User? user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                throw new ObjectNotFoundException("Your id does not match any user");
+            }
+            Hub? hub = await _repository.GetBySpecAsync(new HubSpecification(hub => hub.MacAddress == hubJoinDTO.MacAddress));
+            if(hub is null)
+            {
+                throw new ObjectNotFoundException("Hub with provided mac address does not exists");
+            }
+            if(hub.Users.Any(user=> user.Id == userId))
+            {
+                throw new ObjectAlreadyExistsException("You are already a part of this hub");
+            }
+            if(!_hashingService.VerifyPassword(hubJoinDTO.Password, hub.Password))
+            {
+                throw new AccessForbiddenException("You passed wrong password for this hub");
+            }
+            hub.Users.Add(user);
+            _repository.Update(hub);
+            await _repository.SaveAsync();
+        }
+
+        public async Task Leave(int hubId)
+        {
+            string? userId = GetCurrentUserId();
+            if (userId is null)
+            {
+                throw new AccessForbiddenException("You must be logged in");
+            }
+            User? user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                throw new ObjectNotFoundException("Your id does not match any user");
+            }
+            Hub? hub = await _repository.GetBySpecAsync(new HubSpecification(hub => hub.Id == hubId));
+            if (hub is null)
+            {
+                throw new ObjectNotFoundException("Hub with provided mac address does not exists");
+            }
+            if (!hub.Users.Any(user => user.Id == userId))
+            {
+                throw new ObjectAlreadyExistsException("You are already not a part of this hub");
+            }
+            hub.Users.Remove(user);
+            _repository.Update(hub);
+            await _repository.SaveAsync();
         }
 
         public async Task<IEnumerable<HubLiteDTO>> GetAll()

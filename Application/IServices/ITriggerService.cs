@@ -14,5 +14,6 @@ namespace Application.IServices
         Task<int> Create(TriggerCreateDTO triggerCreateDTO);
         Task Update(TriggerUpdateDTO triggerUpdateDTO);
         Task Remove(int triggerId);
+        Task CheckAllTriggers();
     }
 }

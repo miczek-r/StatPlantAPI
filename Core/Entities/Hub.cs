@@ -12,6 +12,7 @@ namespace Core.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string MacAddress { get; set; }
+        public string Password { get; set; }
         public List<Device> Devices { get; set; }
         public List<User> Users { get; set; }
     }
