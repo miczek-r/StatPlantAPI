@@ -11,7 +11,7 @@ namespace Application.DTOs.Trigger
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Interval Interval { get; set; } 
         public int ConditionsCount { get; set; }
+        public bool IsActive { get; set; }
     }
 }

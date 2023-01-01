@@ -16,8 +16,11 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //builder.Entity<Trigger>().HasMany(trigger=> trigger.Conditions).WithOne(condition => condition.Trigger).On
+
             base.OnModelCreating(builder);
         }
+
 
     }
 }

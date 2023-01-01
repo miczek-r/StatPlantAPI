@@ -12,6 +12,8 @@ namespace Application.IServices
         Task<IEnumerable<HubLiteDTO>> GetAll();
         Task<HubBaseDTO> GetById(int id);
         Task<int> Create(HubCreateDTO hubCreateDTO);
+        Task Join(HubJoinDTO hubJoinDTO);
+        Task Leave(int hubId);
         Task Remove(int id);
     }
 }

@@ -21,9 +21,10 @@ namespace Application.Mappers
                     dest => dest.SensorData, opt => opt.MapFrom(src => src.SensorData.GroupBy(item => item.Sensor.SensorType)
                     .Select(g => g.OrderByDescending(c => c.DateOfMeasurement).FirstOrDefault()).ToList())
                 ).ForMember(
-                    dest => dest.SensorDataDetails, opt => opt.MapFrom(src => src.SensorData.Where(item => item.DateOfMeasurement >= DateTime.Now.AddDays(-1)).GroupBy(item => new { item.Sensor.SensorType.TypeName, DateOfMeasurement = RoundUp(item.DateOfMeasurement,TimeSpan.FromMinutes(15))}).Select(g=> new SensorDataBase2DTO(){ AverageValue = g.Average(x=>x.Value), DateOfMeasurement = g.Key.DateOfMeasurement, SensorTypeName = g.Key.TypeName}))
-                )
-                .PreserveReferences();
+                    dest => dest.SensorDataDetails, opt => opt.MapFrom(src => src.SensorData.Where(item => item.DateOfMeasurement >= DateTime.Now.AddDays(-1)).GroupBy(item => new { item.Sensor.SensorType.TypeName, DateOfMeasurement = RoundUp(item.DateOfMeasurement, TimeSpan.FromMinutes(15)) }).Select(g => new SensorDataBase2DTO() { AverageValue = g.Average(x => x.Value), DateOfMeasurement = g.Key.DateOfMeasurement, SensorTypeName = g.Key.TypeName }))
+                ).ForMember(
+                    dest => dest.CalledTriggers, opt => opt.MapFrom(src => src.Triggers.Where(item => item.HasBeenCalled))
+                ).PreserveReferences();
         }
 
         DateTime RoundUp(DateTime dt, TimeSpan d)

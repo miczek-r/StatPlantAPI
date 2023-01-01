@@ -12,9 +12,12 @@ namespace Core.Entities
     {
         public string Name { get; set; }
         public TriggerType TriggerType { get; set; }
+        public string? ApiUrl { get; set; }
+        public string? NotificationText { get; set; }
         public Device Device { get; set; }
         public int DeviceId { get; set; }
-        public Interval Interval { get; set; }
         public List<Condition> Conditions { get; set; }
+        public bool IsActive { get; set; }
+        public bool HasBeenCalled { get; set; }
     }
 }

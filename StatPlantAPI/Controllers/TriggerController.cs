@@ -35,5 +35,27 @@ namespace StatPlantAPI.Controllers
             TriggerBaseDTO trigger = await _service.Get(id);
             return CreatedAtAction(nameof(TriggerController.Create), new { id }, trigger);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] TriggerUpdateDTO triggerUpdateDTO)
+        {
+            await _service.Update(triggerUpdateDTO);
+            return NoContent();
+        }
+
+        [HttpDelete("{triggerId}")]
+        public async Task<ActionResult> Delete(int triggerId)
+        {
+            await _service.Remove(triggerId);
+            return NoContent();
+        }
+
+
+        [HttpPost("CheckAllTriggers")]
+        public async Task<ActionResult> CheckAllTriggers()
+        {
+            await _service.CheckAllTriggers();
+            return NoContent();
+        }
     }
 }
