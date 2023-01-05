@@ -19,6 +19,7 @@ namespace StatPlantAPI.Configurations
                 mc.AddProfile(new SensorMappingProfile());
                 mc.AddProfile(new ConditionMappingProfile());
                 mc.AddProfile(new TriggerMappingProfile());
+                mc.AddProfile(new EventMappingProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

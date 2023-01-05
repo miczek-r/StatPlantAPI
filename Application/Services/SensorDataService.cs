@@ -1,4 +1,5 @@
-﻿using Application.DTOs.SensorData;
+﻿using Application.DTOs.Device;
+using Application.DTOs.SensorData;
 using Application.Exceptions;
 using Application.IServices;
 using AutoMapper;
@@ -20,13 +21,15 @@ namespace Application.Services
         private readonly ISensorRepository _sensorRepository;
         private readonly IDeviceRepository _deviceRepository;
         private readonly ISensorTypeRepository _sensorTypeRepository;
+        private readonly IDeviceService _deviceService;
 
-        public SensorDataService(IMapper mapper, ISensorDataRepository repository, ISensorRepository sensorRepository, IDeviceRepository deviceRepository, ISensorTypeRepository sensorTypeRepository)
+        public SensorDataService(IMapper mapper, ISensorDataRepository repository, ISensorRepository sensorRepository, IDeviceRepository deviceRepository, ISensorTypeRepository sensorTypeRepository, IDeviceService deviceService)
         {
             _mapper = mapper;
             _repository = repository;
             _sensorRepository = sensorRepository;
             _deviceRepository = deviceRepository;
+            _deviceService = deviceService;
             _sensorTypeRepository = sensorTypeRepository;
         }
 
@@ -34,7 +37,12 @@ namespace Application.Services
         {
             foreach (var singleSensorData in sensorCreateDTO.Data){
             Sensor sensor = await _sensorRepository.GetBySpecAsync(new SensorSpecification(x => x.SensorType.TypeName == singleSensorData.Key));
-                Device device = await _deviceRepository.GetBySpecAsync(new DeviceSpecification(x => x.UUID == sensorCreateDTO.Id));
+                Device? device = await _deviceRepository.GetBySpecAsync(new DeviceSpecification(x => x.UUID == sensorCreateDTO.Id));
+                if(device is null)
+                {
+                    int deviceId = await _deviceService.Create(new DeviceCreateDTO() { Name="New Device", UUID = sensorCreateDTO.Id, HubMacAddress = sensorCreateDTO.MacAddress });
+                    device = await _deviceRepository.GetByIdAsync(deviceId);
+                }
                 SensorData sensorData = new()
                 {
                     DateOfMeasurement = DateTime.UtcNow,

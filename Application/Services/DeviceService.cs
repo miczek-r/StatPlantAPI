@@ -20,17 +20,25 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IDeviceRepository _repository;
+        private readonly IHubRepository _hubRepository;
 
-        public DeviceService(IMapper mapper, IHttpContextAccessor contextAccessor, IDeviceRepository repository)
+        public DeviceService(IMapper mapper, IHttpContextAccessor contextAccessor, IDeviceRepository repository, IHubRepository hubRepositor)
         {
             _mapper = mapper;
             _contextAccessor = contextAccessor;
             _repository = repository;
+            _hubRepository = hubRepositor;
         }
 
         public async Task<int> Create(DeviceCreateDTO deviceCreateDTO)
         {
+            Hub? hub = (await _hubRepository.GetByLambdaAsync(x => x.MacAddress == deviceCreateDTO.HubMacAddress)).FirstOrDefault();
+            if(hub is null)
+            {
+                throw new ObjectNotFoundException("Hub does not exists");
+            }
             Device device = _mapper.Map<Device>(deviceCreateDTO);
+            device.Hub = hub;
             await _repository.AddAsync(device);
             await _repository.SaveAsync();
 
@@ -54,7 +62,7 @@ namespace Application.Services
 
             if (device is null)
             {
-                throw new ObjectNotFoundException("Hub does not exists");
+                throw new ObjectNotFoundException("Device does not exists");
             }
             if (!device.Hub.Users.Any(x => x.Id == userId))
             {

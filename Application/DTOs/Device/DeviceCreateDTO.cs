@@ -16,9 +16,9 @@ namespace Application.DTOs.Device
         public string? Description { get; set; }
         [SwaggerSchema("The device UUID", Nullable = false)]
         public string UUID { get; set; } = String.Empty;
-        [SwaggerSchema("The devices hub identifier")]
-        public int HubId { get; set; }
         [SwaggerSchema("List of sensor data")]
         public List<SensorDataCreateDTO> SensorData { get; set; } = new ();
+        [SwaggerSchema("The devices hub macAddress")]
+        public string HubMacAddress { get; set; }
     }
 }

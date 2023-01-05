@@ -13,5 +13,6 @@ namespace Application.DTOs.SensorData
         public string Id { get; set; }
         [SwaggerSchema("The sensor data")]
         public List<SensorDataSingleDTO> Data { get; set; } = new ();
+        public string MacAddress { get; set; }
     }
 }
