@@ -10,7 +10,7 @@ namespace Core.Entities
     public class Device : BaseEntity
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string UUID { get; set; }
         public Hub Hub { get; set; }
         public List<SensorData> SensorData { get;set;}

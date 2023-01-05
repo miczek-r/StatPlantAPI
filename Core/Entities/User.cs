@@ -8,5 +8,6 @@ namespace Core.Entities
         public string? LastName { get; set; }
         public List<Hub> Hubs { get; set; }
         public List<Notification> Notifications { get; set; }
+        public List<Event> Events { get; set; }
     }
 }
