@@ -16,10 +16,69 @@ namespace UnitTests.MockData
             {
                 new DeviceBaseDTO
                 {
-                    Name = "First Test Device",
+                    Name = "Test Device 1",
                     Description = "This is first test device",
                     UUID = "1234567890",
                 }
+            };
+        }
+
+        public static Device GetDeviceEntity()
+        {
+            return new Device
+            {
+                Name = "Test Device 1",
+                Description = "This is Test Device 1",
+                UUID = "1234567890",
+                Triggers = TriggerMockData.GetTriggerEntities(),
+                SensorData = SensorDataMockData.GetSensorDataEntities()
+            };
+        }
+
+        public static List<Device> GetDeviceEntities()
+        {
+            return new List<Device>
+            {
+            new Device
+            {
+                Name = "Test Device 1",
+                Description = "This is Test Device 1",
+                UUID = "1234567890",
+                Triggers = TriggerMockData.GetTriggerEntities(),
+                SensorData = SensorDataMockData.GetSensorDataEntities(),
+                Hub = HubMockData.EmptyHubEntity()
+            },
+                new Device
+            {
+                Name = "Test Device 2",
+                Description = "This is Test Device 2",
+                UUID = "2234567890",
+                Triggers = TriggerMockData.GetTriggerEntities(),
+                SensorData = SensorDataMockData.GetSensorDataEntities(),
+                Hub = HubMockData.EmptyHubEntity()
+            },
+                new Device
+            {
+                Name = "Test Device 3",
+                Description = "This is Test Device 3",
+                UUID = "1234567890",
+                Triggers = TriggerMockData.GetTriggerEntities(),
+                SensorData = SensorDataMockData.GetSensorDataEntities(),
+                Hub = HubMockData.EmptyHubEntity()
+            }
+            };
+        }
+
+        public static Device NewDeviceEntity()
+        {
+            return new Device
+            {
+                Name = "Test Device 4",
+                Description = "This is Test Device 4",
+                UUID = "4234567890",
+                Triggers = TriggerMockData.GetTriggerEntities(),
+                SensorData = SensorDataMockData.GetSensorDataEntities(),
+                Hub = HubMockData.EmptyHubEntity()
             };
         }
     }
