@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories.Base
 
 
 
-        public async Task<T?> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
+        public async virtual Task<T?> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
 
         public async Task<IReadOnlyList<T>> GetByLambdaAsync(Expression<Func<T, bool>> predicate) => await _dbContext.Set<T>().Where(predicate).ToListAsync();
 

@@ -15,5 +15,9 @@ namespace Infrastructure.Repositories
         public UserRepository(IdentityDbContext dbContext) : base(dbContext)
         {
         }
+        public override async Task<User?> GetByIdAsync(int id)
+        {
+            return null;
+        }
     }
 }
